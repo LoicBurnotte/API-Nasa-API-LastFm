@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>AJAX API NASA</title>
+		<!-- LOIC BURNOTTE -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- table tri -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+</head>
+<body>
+	<style>
+		html{
+			margin-left: auto;
+			margin-right: auto;
+		}
+		img{
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		@media screen and (max-width: 768px){
+			html{
+				width: 100%;
+			}
+		}
+		#NasaPicture{
+			width: 100%;
+		}		
+		.reveal-open {
+			overflow: auto;
+			height: auto;
+		}
+		.reveal-closed {
+			overflow: hidden;
+			height: 200px;
+		}
+		.hide{
+			display:none;
+		}
+		.img{
+			max-width: 60px;
+		}
+		.imgLarge{
+			display: none;
+			margin: 0 10%;
+			text-align: center;
+			z-index: 0;
+			position: fixed;
+			top: 0;
+			height: 100%;
+		}
+	</style>
+
+	<div class="container-fluid text-center">
+		<h1 style="font-size: 10em;">TABLE</h1>
+		<div class="row">
+			<div class="col-sm-8 offset-sm-2">
+				<table id="myTable" class="table table-striped table-default table-bordered table-hover table-responsive-md">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Playcount</th>
+							<th>URL</th>
+							<th>Picture</th>
+							<th>Albums</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="row" style="margin-top:40px;">
+			<div class="col-md-3">
+				<div class="card mb-3">
+					<h3 class="card-header">NASA</h3>
+					<div class="card-body">
+						<h5 class="card-title"></h5>
+						<h6 class="card-subtitle text-muted"> - Picture of the day - </h6>
+					</div>
+					<img id="NasaPicture" src="" alt="" style="height: 200px; width: 100%; display: block;" >
+					<div class="card-body">
+						<p class="card-text">Image NASA</p>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item Copyright"></li>
+						<!-- TOOGLECLASS More and Less -->
+						<div class="show reveal-closed">
+							<li class="list-group-item Explanation"></li>
+						</div>
+						<div id="content">
+							<p class="more" style="color:blue;">MORE...</p>
+							<p class="less hide" style="color:blue;">LESS...</p>							
+						</div>
+
+					</ul>
+					<div class="card-body">
+						<a href="https://www.nasa.gov/" class="card-link">Learn more</a>
+					</div>
+					<div class="card-footer text-muted">
+				 		
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="jumbotron">
+					<h1 class="display-3">NASA</h1>
+					<p class="lead"> - Picture of the day - </p>
+					<hr class="my-4">
+					<img id="NasaPicture" src="" alt="">
+					<div class="content"></div>
+					<p class="lead">
+					<a class="btn btn-primary btn-lg" href="https://www.nasa.gov/" role="button">Learn more</a>
+					</p>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card mb-3">
+					<h3 class="card-header">NASA</h3>
+					<div class="card-body">
+						<h5 class="card-title"></h5>
+						<h6 class="card-subtitle text-muted"> - Picture of the day - </h6>
+					</div>
+					<img id="NasaPicture" src="" alt="" style="height: 200px; width: 100%; display: block;" >
+					<div class="card-body">
+						<p class="card-text">Image NASA</p>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item Copyright"></li>
+						<!-- TOOGLECLASS More and Less -->
+						<div class="show2 reveal-closed">
+							<li class="list-group-item Explanation"></li>
+						</div>
+						<div id="content2">
+							<p class="more2" style="color:blue;">MORE...</p>
+							<p class="less2 hide" style="color:blue;">LESS...</p>							
+						</div>
+					</ul>
+					<div class="card-body">
+						<a href="https://www.nasa.gov/" class="card-link">Learn more</a>
+					</div>
+					<div class="card-footer text-muted">
+				 		
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" href="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" href="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" href="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+	<script>
+		$(document).ready( function () {
+			let table = $('#myTable').DataTable();
+			$.ajax({
+				url: "http://ws.audioscrobbler.com/2.0/?method=library.getartists&api_key=f9bdc736de322377b88bba4b7dc22330&&user=joanofarctan&format=json",
+				datatype: 'json',
+				success: function(data){
+					let artists = data.artists.artist;
+					console.log(data.artists.artist);
+					for(i=0; i < artists.length; i++){
+						let name = artists[i].name;
+						let playcount = artists[i].playcount;
+						let url = artists[i].url;
+						let imageUrl = artists[i].image[3]["#text"];
+						console.log(imageUrl);
+						$("tbody").append("<tr class='odd tr" + i + "' role='row'>");
+							$(".tr"+ i).append("<td class='sorting_1'>" + name + "</td>");
+							$(".tr"+ i).append("<td>" + playcount + "</td>");
+							$(".tr"+ i).append("<td><a href='" + url + "' target='_blank'>More on LastFM</a></td>");
+							$(".tr"+ i).append("<td><img class='img' src='" + imageUrl + "'' alt='Picture of" +  name + "'></td>");
+							$(".tr"+ i).append("<td><a href=''>Albums LINK</a></td>")
+						$("tbody").append("</tr>");
+						let row = $(".tr" + i);
+						table.row.add(row).draw();
+					}
+				}
+			});
+		});
+		
+		$.ajax({
+			url: "https://api.nasa.gov/planetary/apod?api_key=ZtqrbgeLWtI4yd1KkNCz1N6nqOFDjWgE9KrG2DKY",
+			datatype: 'json',
+			success: function(data){
+				let title = data.title;
+				$(".card-title").append(title);
+				let copyright = data.copyright;
+				let explanation = data.explanation;
+				let imageURL = data.hdurl;$
+				$("#NasaPicture").attr('src', imageURL);
+				$("#NasaPicture").attr('alt', copyright);
+				$(".Copyright").append("<h3>Copyright : </h3><p>" + copyright + "</p>");
+				$(".Explanation").append("<h3>Explanation : </h3><p>" + explanation + "</p>");
+			}
+		});
+		$("#content").click(function() {
+			$(".show").toggleClass("reveal-closed").toggleClass("reveal-open");
+			$("#content").find(".more").toggleClass("hide");
+			$("#content").find(".less").toggleClass("hide");
+		});
+		$("#content2").click(function() {
+			$(".show2").toggleClass("reveal-closed").toggleClass("reveal-open");
+			$("#content2").find(".more2").toggleClass("hide");
+			$("#content2").find(".less2").toggleClass("hide");
+		});
+
+		$.ajax({
+			url: "https://api.census.gov/data/" + $("#selectYear").val() + "/acs/flows?",
+			datatype: 'json',
+			success: function(data){
+			}
+		});
+
+		$(".img").click(function(){
+			$(".img").toggleClass(".imgLarge");
+		});
+		
+		// listen for scroll
+		/*var positionElementInPage = $('.imgLarge').offset().top;
+		$(window).scroll(function(){
+			if($(window).scrollTop()){
+				// fixed
+				$('.imgLarge').addClass("floatable");
+			}else{
+				// relative
+				$('.imgLarge').removeClass("floatable");
+			}
+		});*/
+	</script>
+</body>
+</html>
